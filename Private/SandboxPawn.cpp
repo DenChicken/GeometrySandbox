@@ -3,7 +3,9 @@
 
 #include "SandboxPawn.h"
 #include "Components/InputComponent.h"
-
+// M2L18 3: подключаем хедеры статик меша и камеры
+#include "Components/StaticMeshComponent.h"
+#include "Camera/CameraComponent.h"
 
 // M2L17 8: создаём паунам свою категорию логирования
 DEFINE_LOG_CATEGORY_STATIC(LogSandboxPawn, All, All)
@@ -19,6 +21,13 @@ ASandboxPawn::ASandboxPawn()
 	SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
 	SetRootComponent(SceneComponent);
 
+	// M2L18 4: создаём два компонента по аналогии со СценКомпонент
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
+
+	// M2L18 5: добавим компоненты в иерархию компонентов нашего пауна при помощи функции в SceneComponent (т.к. меш и камеры наследники)
+	StaticMeshComponent->SetupAttachment(SceneComponent); // можно GetRootComponent(), т.к. SceneComponent корневой 
+	CameraComponent->SetupAttachment(SceneComponent);
 
 }
 
@@ -42,6 +51,9 @@ void ASandboxPawn::Tick(float DeltaTime)
 
 		// M2L17 12: Устанавливаем новое положение нашему пауну
 		SetActorLocation(NewLocation);
+
+		// M2L18 25: после смены пауна вручную останавливаем первый
+		VelocityVector = FVector::ZeroVector;
 	}
 
 }
@@ -51,15 +63,18 @@ void ASandboxPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// M2L17 9: чтобы функции срабатывали при срабатывании мэпингов (нажатиях), необходимо их забиндить при помощи функций
-	PlayerInputComponent->BindAxis("MoveForward", this, &ASandboxPawn::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ASandboxPawn::MoveRight);
+	if (PlayerInputComponent)
+	{
+		// M2L17 9: чтобы функции срабатывали при срабатывании мэпингов (нажатиях), необходимо их забиндить при помощи функций
+		PlayerInputComponent->BindAxis("MoveForward", this, &ASandboxPawn::MoveForward);
+		PlayerInputComponent->BindAxis("MoveRight", this, &ASandboxPawn::MoveRight);
+	}
 } 
 
 void ASandboxPawn::MoveForward(float Amount)
 {
 	// M2L17 8: залогируем параметр Amount
-	UE_LOG(LogSandboxPawn, Display, TEXT("Move forward: %f"), Amount);
+	// UE_LOG(LogSandboxPawn, Display, TEXT("Move forward: %f"), Amount);
 
 	// M2L17 9: Запрограммируем движение по оX (Amount = [1, -1])
 	VelocityVector.X = Amount;
@@ -68,10 +83,25 @@ void ASandboxPawn::MoveForward(float Amount)
 void ASandboxPawn::MoveRight(float Amount)
 {
 	// M2L17 8: залогируем параметр Amount
-	UE_LOG(LogSandboxPawn, Display, TEXT("Move right: %f"), Amount);
+	// UE_LOG(LogSandboxPawn, Display, TEXT("Move right: %f"), Amount);
 
 	// M2L17 9: Запрограммируем движение по оY (Amount = [1, -1])
 	VelocityVector.Y = Amount;
 
+}
+
+void ASandboxPawn::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!NewController) return;
+	UE_LOG(LogSandboxPawn, Error, TEXT("%s possessed %s"), *GetName(), *NewController->GetName());
+}
+
+void ASandboxPawn::UnPossessed()
+{
+	Super::UnPossessed();
+
+	UE_LOG(LogSandboxPawn, Warning, TEXT("%s unpossessed"), *GetName());
 }
 

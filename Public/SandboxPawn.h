@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "SandboxPawn.generated.h"
 
+// M2L18 2: предварительное объ€вление класса
+class UCameraComponent;
+
 UCLASS()
 class GEOMETRYSANDBOX_API ASandboxPawn : public APawn
 {
@@ -24,6 +27,18 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Velocity = 300.0f;
 	
+	// M2L18 1: добавим два компонента дл€ визуального отображени€ пауна камеры вьюпорта
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* StaticMeshComponent;
+
+	// M2L18 1:
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComponent;
+
+	// M2L18 24: добавим функции дл€ обработки получени€ и утраты контрол€ над пауном
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
+
 
 protected:
 	// Called when the game starts or when spawned
