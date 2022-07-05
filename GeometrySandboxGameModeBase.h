@@ -14,4 +14,8 @@ class GEOMETRYSANDBOX_API AGeometrySandboxGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+
+public:
+	// M2L17 1: Создаём конструктор класса
+	AGeometrySandboxGameModeBase();
 };
