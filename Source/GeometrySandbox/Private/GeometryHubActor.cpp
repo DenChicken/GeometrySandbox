@@ -24,7 +24,8 @@ void AGeometryHubActor::BeginPlay()
 
 	// DoActorSpawn1();
 	// DoActorSpawn2();
-	DoActorSpawn3();
+	// DoActorSpawn3();
+	DoActorSpawn4();
 	
 }
 
@@ -33,6 +34,9 @@ void AGeometryHubActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// M2L20 4: каждый фрейм будем выводить информацию о наших указателях
+	UE_LOG(LogGeometryHub, Warning, TEXT("property pointer %i, is valid %i"), PropertyActor != nullptr, IsValid(PropertyActor));
+	UE_LOG(LogGeometryHub, Error, TEXT("none property pointer %i, is valid %i"), NonePropertyActor != nullptr, IsValid(NonePropertyActor));
 }
 
 void AGeometryHubActor::DoActorSpawn1()
@@ -140,3 +144,14 @@ void AGeometryHubActor::OnTimerFinished(AActor* Actor)
 	// Geometry->SetLifeSpan(2.0f);
 }
 
+void AGeometryHubActor::DoActorSpawn4()
+{
+	if (!GetWorld()) return;
+
+	// M2L20 3: создадим двух акторов и установим на них наши указатели
+	FTransform GeometryTransform = FTransform(FRotator::ZeroRotator, FVector(700.0f, 300.0f, 300.0f));
+	NonePropertyActor = GetWorld()->SpawnActor<ABaseGeometryActor>(GeometryClass, GeometryTransform);
+
+	GeometryTransform = FTransform(FRotator::ZeroRotator, FVector(700.0f, 700.0f, 300.0f));
+	PropertyActor = GetWorld()->SpawnActor<ABaseGeometryActor>(GeometryClass, GeometryTransform);
+}

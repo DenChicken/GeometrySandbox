@@ -51,6 +51,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	// M2L20 1: проверим работу сборщика мусора (garbage collector)
+	// ... одна переменная будет помечена UPROPERTY(), другая - нет
+	ABaseGeometryActor* NonePropertyActor;
+	UPROPERTY()
+	ABaseGeometryActor* PropertyActor;
+
+	// M2L20 2: объявим доп функцию для спауна
+	void DoActorSpawn4();
+
+
 	void DoActorSpawn1();
 	void DoActorSpawn2();
 	void DoActorSpawn3();
