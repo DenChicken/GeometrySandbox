@@ -2,10 +2,11 @@
 
 
 #include "SandboxPawn.h"
-#include "Components/InputComponent.h"
+#include "Components/InputComponent.h" // M2L19
 // M2L18 3: подключаем хедеры статик меша и камеры
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Gameframework/Controller.h"
 
 // M2L17 8: создаём паунам свою категорию логирования
 DEFINE_LOG_CATEGORY_STATIC(LogSandboxPawn, All, All)

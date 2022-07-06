@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 // M2L18 17: подключаем хедер пауна
 #include "SandboxPawn.h"
+#include "Engine/World.h"
 
 
 // M2L18 13: создаём паунам свою категорию логирования

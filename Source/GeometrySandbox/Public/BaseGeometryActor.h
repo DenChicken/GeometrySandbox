@@ -11,8 +11,10 @@
 */
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/StaticMeshComponent.h"
+// #include "Components/StaticMeshComponent.h"
 #include "BaseGeometryActor.generated.h"
+
+class UStaticMeshComponent; // M2L19
 
 
 // M2L15 6: ќбъ€вим наш делегат при помощи макроса DECLARE_...DELEGATE() (их там очень много, см. F12)

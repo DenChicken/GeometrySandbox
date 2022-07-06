@@ -8,6 +8,7 @@
 
 // M2L18 2: предварительное объ€вление класса
 class UCameraComponent;
+class UStaticMeshComponent; // M2L19
 
 UCLASS()
 class GEOMETRYSANDBOX_API ASandboxPawn : public APawn

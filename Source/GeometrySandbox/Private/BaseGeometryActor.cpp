@@ -8,6 +8,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 // M2L13: Заголовочный файл для таймера
 #include "TimerManager.h"
+#include "Components/StaticMeshComponent.h" // M2L19
 
 
 // Создадим собственную категорию логирования (название, ур.лог, ур.лог.компил.)
